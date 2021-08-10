@@ -1,2 +1,3 @@
 # ccrhub-scripts
-Helper scripts to upload
+Helper sample bash scripts for the CCRHUB platform
+
