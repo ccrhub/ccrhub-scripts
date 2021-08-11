@@ -5,3 +5,6 @@
 # eg
 
 ```./upload.sh -h https://dev.ccrhub.net -f dump.json -k abc123 -r TEST_RELATION```
+
+# To view the status of the job:
+```https://<instance>.ccrhub.net/job/status/<jobID>```
