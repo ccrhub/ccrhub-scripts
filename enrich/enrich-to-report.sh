@@ -22,7 +22,7 @@ while getopts "h:e:k:r:f:" arg; do
 done
 
 
-jobId=`curl "$host"'/.netlify/functions/job-starter' \
+jobId=`curl "$host"'/.netlify/functions/endpoints/job-starter' \
   -H 'Content-Type: application/json' \
   -H 'X-API-KEY: '"$apikey" \
   --data '{"functionId":"enrich-to-report-background","reportId":"'"$reportId"'","enricherId":"'"$enricherId"'"}' \
