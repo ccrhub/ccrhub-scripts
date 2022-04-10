@@ -1,7 +1,7 @@
 #!/bin/bash -x
 
 
-while getopts "h:e:k:b:" arg; do
+while getopts "h:k:r:" arg; do
     case $arg in
         h)
 					host=$OPTARG
@@ -9,8 +9,8 @@ while getopts "h:e:k:b:" arg; do
         k)
 					apikey=$OPTARG
 				;;
-        b)
-					batchJobId=$OPTARG
+        r)
+					relationId=$OPTARG
 				;;
     esac
 done
@@ -19,7 +19,7 @@ done
 jobId=`curl "$host"'/.netlify/functions/job-starter' \
   -H 'Content-Type: application/json' \
   -H 'X-API-KEY: '"$apikey" \
-  --data '{"functionId":"batch-job-background","batchJobId":"'"$batchJobId"'"}' \
+  --data '{"functionId":"email-background","relationId":"'"$relationId"'"}' \
   --compressed | jq -r .jobId`
 
 echo 'Queued JobId:' "$jobId"
