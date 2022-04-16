@@ -5,6 +5,7 @@ import * as chalkAnimation from 'chalk-animation';
 import clear from 'clear';
 import { Command } from "commander";
 import figlet from 'figlet';
+import fetch from "node-fetch";
 import TerminalLink from "terminal-link";
 
 
@@ -33,11 +34,11 @@ const program = new Command();
 program
   .version("1.0.0")
   .description("CCRHub CLI")
-  .option("-p, --peppers", "Add peppers")
-  .option("-P, --pineapple", "Add pineapple")
-  .option("-b, --bbq", "Add bbq sauce")
-  .option("-c, --cheese <type>", "Add the specified type of cheese [marble]")
-  .option("-C, --no-cheese", "You do not want any cheese")
+  .option("-h, --host", "Host")
+  .option("-k, --key", "API Key")
+  .option("-r, --relationId <RelationID>", "Relation ID")
+  .option("--subject <subject>", "The email subject")
+  .option("--toEmailAddressKey <emailAddressKey>", "The email address key")
   .parse(process.argv);
 
 const options = program.opts();
@@ -61,3 +62,8 @@ const intiateMessage = chalkAnimation.neon("Initiating Firing Sequence", 3);
 intiateMessage.start();
 const link = TerminalLink("ccrhub.com", "https://www.ccrhub.com");
 console.log(link);
+
+fetch("https://google.com")
+  .then((res) => res.text())
+  .then((text) => console.log(text));
+
