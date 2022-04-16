@@ -19,7 +19,7 @@
     "npm:format": "npx prettier-package-json --write package.json",
     "npm:upgrade": "npx npm-check-updates -iu",
     "refresh": "rm -rf ./node_modules ./package-lock.json && npm install",
-    "start": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
+    "start": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts -d --host http://localhost:8010",
     "test": "sudo npm i -g && ccr"
   },
   "dependencies": {

@@ -34,7 +34,8 @@ const program = new Command();
 program
   .version("1.0.0")
   .description("CCRHub CLI")
-  .option("-h, --host", "Host")
+  .option("-d, --debug", "output extra debugging")
+  .option("-h, --host <host>", "Host")
   .option("-k, --key", "API Key")
   .option("-r, --relationId <RelationID>", "Relation ID")
   .option("--subject <subject>", "The email subject")
@@ -42,11 +43,8 @@ program
   .parse(process.argv);
 
 const options = program.opts();
+if (options.debug) console.log(options);
 
-console.log('enter command:');
-if (options.peppers) console.log('  - peppers');
-if (options.pineapple) console.log('  - pineapple');
-if (options.bbq) console.log('  - bbq');
 
 const cheese: string = undefined === options.cheese
     ? 'marble'
@@ -63,7 +61,7 @@ intiateMessage.start();
 const link = TerminalLink("ccrhub.com", "https://www.ccrhub.com");
 console.log(link);
 
-fetch("https://google.com")
+fetch(options.host)
   .then((res) => res.text())
   .then((text) => console.log(text));
 
