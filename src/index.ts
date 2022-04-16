@@ -1,25 +1,32 @@
 #!/usr/bin/env node
 
 import chalk from 'chalk';
+import * as chalkAnimation from 'chalk-animation';
 import clear from 'clear';
 import { Command } from "commander";
-
-
 import figlet from 'figlet';
+import TerminalLink from "terminal-link";
+
+
+
+
 
 clear();
+
+
+
 console.log(
   chalk.blue(
     figlet.textSync('CCrHub-cli', { horizontalLayout: 'full' })
   )
 );
-console.log(
+console.warn(
   chalk.green(
-    "Digital Delivery in under 2 minutes " +
-      chalk.blue.underline.bold("Initiating firing sequence") +
-      " Initiating!"
+    "Digital Delivery in under 2 minutes "
   )
 );
+
+
 
 const program = new Command();
 
@@ -49,3 +56,8 @@ console.log('  - %s cheese', cheese);
 if (!process.argv.slice(2).length) {
   program.outputHelp();
 }
+
+const intiateMessage = chalkAnimation.neon("Initiating Firing Sequence", 3);
+intiateMessage.start();
+const link = TerminalLink("ccrhub.com", "https://www.ccrhub.com");
+console.log(link);
