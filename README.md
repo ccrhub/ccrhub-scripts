@@ -1,3 +1,3 @@
 # ccrhub-scripts
-Helper sample bash scripts for the CCRHUB platform
+Helper sample bash node scripts for the CCRHUB platform
 
