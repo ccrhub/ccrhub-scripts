@@ -44,19 +44,21 @@ if (!process.argv.slice(2).length) {
 program
   .command("email-background")
   .option("-d, --debug", "output extra debugging")
-  .option("-f, --functionId <functionId>", "Relation ID")
-  .option("-h, --host <host>", "Host")
-  .option("-k, --apikey <apiKey>", "API Key")
-  .option("-r, --relationId <relationID>", "Relation ID")
+  .requiredOption("-h, --host <host>", "Host (required)")
+  .requiredOption("-k, --apikey <apiKey>", "API Key (required)")
+  .requiredOption("-r, --relationId <relationID>", "Relation ID (required)")
+  .requiredOption("--subject <subject>", "The email subject (required)")
+  .requiredOption(
+    "--toEmailAddressKey <toEmailAddressKey>",
+    "The email address key (required)"
+  )
   .option("--text <text>", "The text body of the email")
   .option("--html <html>", "The HTML body of the email")
   .option("--templateTextId <templateTextlId>", "The TEXT template ID")
   .option("--templateHtmlId <templateHtmlId>", "The HTML template ID")
-
-  .requiredOption("--subject <subject>", "The email subject")
-  .requiredOption(
-    "--toEmailAddressKey <toEmailAddressKey>",
-    "The email address key"
+  .option(
+    "--replyToEmailAddress <replyToEmailAddress>",
+    'The reply email address (defaults to: "No Reply" noreply@<instance>.ccrhub.net is used'
   )
   .action(async (options) => {
     // inject functionId
