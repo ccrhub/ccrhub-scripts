@@ -34,34 +34,73 @@ const program = new Command();
 program
   .version("1.0.0")
   .description("CCRHub CLI")
-  .option("-d, --debug", "output extra debugging")
-  .option("-h, --host <host>", "Host")
-  .option("-k, --key", "API Key")
-  .option("-r, --relationId <RelationID>", "Relation ID")
-  .option("--subject <subject>", "The email subject")
-  .option("--toEmailAddressKey <emailAddressKey>", "The email address key")
-  .parse(process.argv);
 
-const options = program.opts();
-if (options.debug) console.log(options);
-
-
-const cheese: string = undefined === options.cheese
-    ? 'marble'
-    : options.cheese || 'no';
-
-console.log('  - %s cheese', cheese);
 
 if (!process.argv.slice(2).length) {
   program.outputHelp();
 }
+
+
+program
+  .command("email-background")
+  .option("-d, --debug", "output extra debugging")
+  .option("-f, --functionId <functionId>", "Relation ID")
+  .option("-h, --host <host>", "Host")
+  .option("-k, --apikey <apiKey>", "API Key")
+  .option("-r, --relationId <relationID>", "Relation ID")
+  .option("--text <text>", "The text body of the email")
+  .option("--html <html>", "The HTML body of the email")
+  .option("--templateTextId <templateTextlId>", "The TEXT template ID")
+  .option("--templateHtmlId <templateHtmlId>", "The HTML template ID")
+
+  .requiredOption("--subject <subject>", "The email subject")
+  .requiredOption(
+    "--toEmailAddressKey <toEmailAddressKey>",
+    "The email address key"
+  )
+  .action(async (options) => {
+    // inject functionId
+    options.functionId = "email-background";
+    console.log(options);
+    fetch(`${options.host}/.netlify/functions/job-starter`, {
+      method: "POST",
+      headers: {
+        "X-API-KEY": options.apikey,
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(options),
+    })
+      .then((res) => res.text())
+      .then((text) => console.log(text));
+  });
+
+program
+  .command("email-background2")
+
+
+
+
+const options = program.opts();
+if (options.debug) console.log(options);
+
+program.parse(process.argv);
+
 
 const intiateMessage = chalkAnimation.neon("Initiating Firing Sequence", 3);
 intiateMessage.start();
 const link = TerminalLink("ccrhub.com", "https://www.ccrhub.com");
 console.log(link);
 
-fetch(options.host)
-  .then((res) => res.text())
-  .then((text) => console.log(text));
+// fetch(`${options.host}/.netlify/functions/job-starter`, {
+//   method: "POST",
+//   headers: {
+//     "X-API-KEY": options.apikey,
+//     Accept: "application/json",
+//     "Content-Type": "application/json",
+//   },
+//   body: JSON.stringify(options),
+// })
+//   .then((res) => res.text())
+//   .then((text) => console.log(text));
 
