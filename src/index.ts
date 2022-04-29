@@ -5,17 +5,10 @@ import * as chalkAnimation from 'chalk-animation';
 import clear from 'clear';
 import { Command } from "commander";
 import figlet from 'figlet';
+import fs from "fs";
 import fetch from "node-fetch";
 import TerminalLink from "terminal-link";
-
-
-
-
-
 clear();
-
-
-
 console.log(
   chalk.blue(
     figlet.textSync('CCrHub-cli', { horizontalLayout: 'full' })
@@ -78,7 +71,47 @@ program
   });
 
 program
-  .command("email-background2")
+  .command("file-store-upload")
+  .requiredOption("-h, --host <host>", "Host (required)")
+  .requiredOption("-k, --apikey <apiKey>", "API Key (required)")
+  .requiredOption("-r, --relationId <relationID>", "Relation ID (required)")
+  .requiredOption("-f, --fileName <fileName>", "The file (required)")
+  .action(async (options) => {
+    // inject functionId
+    console.log(options);
+    fetch(
+      `${options.host}/.netlify/functions/filestore/${options.relationId}`,
+      {
+        method: "POST",
+        headers: {
+          "X-API-KEY": options.apikey,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(options),
+      }
+    )
+      .then((res) => res.text())
+      .then((text) =>  {
+				const readBuffer = fs.readFileSync(`./${options.fileName}`);
+				const responseBody = JSON.parse(text);
+				const presignedUploadUrl = responseBody.signedUrl;
+				const fileId = responseBody.file.id;
+				console.log(presignedUploadUrl);
+				console.log(`fileId: ${fileId}`);
+				fetch(presignedUploadUrl, {
+          method: "PUT",
+          headers: { "Content-Type": "application/octet-stream" },
+          body: readBuffer,
+        })
+          .then((res) => res.text())
+          .then((text) => console.log(text))
+          .catch((err) => console.log(err));
+
+			});
+
+  });
+
 
 
 
