@@ -76,11 +76,15 @@ program
   .requiredOption("-k, --apikey <apiKey>", "API Key (required)")
   .requiredOption("-r, --relationId <relationID>", "Relation ID (required)")
   .requiredOption("-f, --fileName <fileName>", "The file (required)")
+  .option("--recordId <recordId>", "Relation ID (required)")
+  .option("--public", "indicates if the file is public")
   .action(async (options) => {
     // inject functionId
     console.log(options);
     fetch(
-      `${options.host}/.netlify/functions/filestore/${options.relationId}`,
+      `${options.host}/.netlify/functions/filestore/${options.relationId}${
+        options.recordId ? `/${options.recordId}` : ""
+      }`,
       {
         method: "POST",
         headers: {
@@ -92,14 +96,14 @@ program
       }
     )
       .then((res) => res.text())
-      .then((text) =>  {
-				const readBuffer = fs.readFileSync(`./${options.fileName}`);
-				const responseBody = JSON.parse(text);
-				const presignedUploadUrl = responseBody.signedUrl;
-				const fileId = responseBody.file.id;
-				console.log(presignedUploadUrl);
-				console.log(`fileId: ${fileId}`);
-				fetch(presignedUploadUrl, {
+      .then((text) => {
+        const readBuffer = fs.readFileSync(`./${options.fileName}`);
+        const responseBody = JSON.parse(text);
+        const presignedUploadUrl = responseBody.signedUrl;
+        const fileId = responseBody.file.id;
+        console.log(presignedUploadUrl);
+        console.log(`fileId: ${fileId}`);
+        fetch(presignedUploadUrl, {
           method: "PUT",
           headers: { "Content-Type": "application/octet-stream" },
           body: readBuffer,
@@ -107,9 +111,7 @@ program
           .then((res) => res.text())
           .then((text) => console.log(text))
           .catch((err) => console.log(err));
-
-			});
-
+      });
   });
 
 
