@@ -82,6 +82,7 @@ program
   .option("--public", "indicates if the file is public")
   .action(async (options) => {
     // strip the full path
+    const fullFilePath = options.fileName;
     options.fileName = path.basename(options.fileName);
     // inject functionId
     console.log(options);
@@ -101,7 +102,7 @@ program
     )
       .then((res) => res.text())
       .then((text) => {
-        const readBuffer = fs.readFileSync(`${options.fileName}`);
+        const readBuffer = fs.readFileSync(`${fullFilePath}`);
         const responseBody = JSON.parse(text);
         console.log(text);
         const presignedUploadUrl = responseBody.signedUrl;
