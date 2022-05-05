@@ -7,7 +7,9 @@ import { Command } from "commander";
 import figlet from 'figlet';
 import fs from "fs";
 import fetch from "node-fetch";
+import * as path from 'path';
 import TerminalLink from "terminal-link";
+
 clear();
 console.log(
   chalk.blue(
@@ -79,6 +81,8 @@ program
   .option("--recordId <recordId>", "Relation ID (required)")
   .option("--public", "indicates if the file is public")
   .action(async (options) => {
+    // strip the full path
+    options.fileName = path.basename(options.fileName);
     // inject functionId
     console.log(options);
     fetch(
@@ -97,8 +101,9 @@ program
     )
       .then((res) => res.text())
       .then((text) => {
-        const readBuffer = fs.readFileSync(`./${options.fileName}`);
+        const readBuffer = fs.readFileSync(`${options.fileName}`);
         const responseBody = JSON.parse(text);
+        console.log(text);
         const presignedUploadUrl = responseBody.signedUrl;
         const fileId = responseBody.file.id;
         console.log(presignedUploadUrl);
