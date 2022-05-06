@@ -102,7 +102,7 @@ program
     )
       .then((res) => res.text())
       .then((text) => {
-        const readBuffer = fs.readFileSync(`${fullFilePath}`);
+        const readBuffer = fs.readFileSync(`${fullFilePath }`);
         const responseBody = JSON.parse(text);
         console.log(text);
         const presignedUploadUrl = responseBody.signedUrl;
